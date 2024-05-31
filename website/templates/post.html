@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{post.title}}{% endblock %}
+{% block content %}
+<style>
+  .wrapper {
+    padding: 20px;
+    /* background: #eaeaea; */
+    /* max-width: 400px; */
+    margin: 50px auto;
+  }
+  .demo-1 {
+  /* overflow: hidden; */
+  display: -webkit-box;
+  /* -webkit-line-clamp: 3; */
+  -webkit-box-orient: vertical;
+  }
+</style>
+
+<div align="center">
+  <h1>title : {{post.title}}</h1>
+  <a>{{ post.tags }}</a>
+
+  <div align="left">
+    <h3>author : {{post.author.name}}</h3>
+    <h3>post time : {{post.date}}</h3>
+    <br>
+    <br>
+    <a>likes : {{ post.likes | length }}</a>
+    <br>
+    <br>
+    <h3>Content</h3>
+  </div>
+
+    <div class="wrapper">
+      <p class="demo-1" align="left">{{post.content}}</p>
+    </div>
+    {% if user.is_authenticated %}
+      {% if user in post.likes %}
+        <a class="btn btn-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Like</a>
+      {% else %}
+        <a class="btn btn-outline-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Like</a>
+      {% endif %}
+    {% endif %}
+  <br>
+  <br>
+  {% if user.is_authenticated %}
+    <a class="btn btn-danger" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/report">Report</a>
+  {% endif %}
+  <br>
+  <br>
+
+  {% if user.is_authenticated %}
+    <form method="POST">
+          <div class="mb-3">
+            <label for="text" class="form-label">Comment</label>
+            <input type="text" id="text" name="text" class="form-control" placeholder="Enter Your Comment" required>
+          </div>
+          <button type="submit" class="btn btn-primary">comment</button>
+      </form>
+  {% endif %}
+
+  <h3>Comments</h3>
+  {% for comment in post.comments %}
+    <a>author: {{comment.user.name}}</a>
+    <br>
+    <a>{{comment.text}}</a>
+    <br>
+    <br>
+    <br>
+  {% endfor %}
+
+  {% if user.is_authenticated %}
+  {% endif %}
+</div>
+{% endblock %}

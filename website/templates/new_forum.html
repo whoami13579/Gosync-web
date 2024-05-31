@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}New Post{% endblock %}
+{% block content %}
+<form method="POST">
+    <h1 align="left">New Post</h1>
+      <div class="mb-3">
+        <label for="name" class="form-label">Name of the Forum</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Enter the Name of the Forum" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">ADD</button>
+  </form>
+  <br>
+{% endblock %}

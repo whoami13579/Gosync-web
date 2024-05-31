@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{post.title}}{% endblock %}
+{% block content %}
+<style>
+  .wrapper {
+    padding: 20px;
+    /* background: #eaeaea; */
+    /* max-width: 400px; */
+    margin: 50px auto;
+  }
+  .demo-1 {
+  /* overflow: hidden; */
+  display: -webkit-box;
+  /* -webkit-line-clamp: 3; */
+  -webkit-box-orient: vertical;
+  }
+</style>
+
+<div align="center">
+  <h1>title : {{post.title}}</h1>
+  <a>{{ post.tags }}</a>
+
+  <div align="left">
+    <h3>author : {{post.author.name}}</h3>
+    <h3>post time : {{post.date}}</h3>
+    <br>
+    <br>
+    <a>likes : {{ post.likes | length }}</a>
+    <br>
+    <br>
+    <h3>Content</h3>
+  </div>
+
+    <div class="wrapper">
+      <p class="demo-1" align="left">{{post.content}}</p>
+    </div>
+
+    <br>
+    <br>
+    {% for report in post.reports %}
+        <a>reason: {{report.reason}}</a>
+        <br>
+    {% endfor %}
+    <br>
+    <br>
+  {% if user.is_authenticated and user.role_id == 2 %}
+    <a class="btn btn-primary" href="/reported-posts/{{post.post_id}}/ok">Ok</a>
+    <a class="btn btn-danger" href="/reported-posts/{{post.post_id}}/delete">Delete</a>
+  {% endif %}
+  <br>
+  <br>
+
+  {% if user.is_authenticated %}
+  {% endif %}
+</div>
+{% endblock %}

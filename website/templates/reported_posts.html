@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Reported Posts{% endblock %}
+{% block content %}
+<style>
+    .brief {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    }
+</style>
+<div align="center">
+    <h1>Reported Posts</h1>
+    <br>
+    <br>
+
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-header">
+                <div align="left">title: {{ post.title }}</div>
+                <div align="right">author: {{ post.author.name }}, time: {{ post.date }}</div>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Content</h5>
+            <p class="card-text brief">{{ post.tags }}</p>
+            <p class="card-text brief">{{ post.content }}</p>
+            <a href="/reported-posts/{{post.post_id}}" class="btn btn-primary">See Post</a>
+            </div>
+        </div>
+        <br>
+        <br>
+      {% endfor %}
+      <br>
+      <br>
+      <br>
+      <br>
+    {% if user.is_authenticated %}
+    {% endif %}
+</div>
+{% endblock %}

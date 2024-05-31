@@ -1,0 +1,65 @@
+
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<style>
+    .brief {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    }
+</style>
+<div align="center">
+    <h1>Search</h1>
+    <br>
+    <br>
+
+<form method="POST">
+      <div class="mb-3">
+        <input type="text" id="search" name="search" class="form-control" placeholder="Search" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+    <br>
+    <br>
+    {% for forum in forums %}
+        <div class="card">
+            <div class="card-header">
+            {{ forum.name }}
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Description</h5>
+            <p class="card-text brief">{{ forum.description }}</p>
+            <a href="/forum/{{ forum.forum_id }}" class="btn btn-primary">See Forum</a>
+            </div>
+        </div>
+        <br>
+        <br>
+    {% endfor %}
+
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-header">
+                <div align="left">title: {{ post.title }}</div>
+                <div align="right">author: {{ post.author.name }}, time: {{ post.date }}</div>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Content</h5>
+            <p class="card-text brief">{{ post.tags }}</p>
+            <p class="card-text brief">{{ post.content }}</p>
+            <a href="/forum/{{post.forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Post</a>
+            </div>
+        </div>
+        <br>
+        <br>
+      {% endfor %}
+      <br>
+      <br>
+      <br>
+      <br>
+    {% if user.is_authenticated %}
+    {% endif %}
+</div>
+{% endblock %}

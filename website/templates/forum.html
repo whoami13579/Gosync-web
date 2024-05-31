@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ forum.name }}{% endblock %}
+{% block content %}
+<style>
+    .brief {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    }
+</style>
+<div align="center">
+    <h1>{{ forum.name }}</h1>
+    <br>
+    <br>
+
+    {% if user.user_id == forum.user_id %}
+        <a class="btn btn-danger" href="/forum/{{forum.forum_id}}/delete">Delete Forum</a>
+    {% endif %}
+
+    {% if user.is_authenticated and user in forum.users %}
+        <a class="btn btn-danger" href="/forum/{{forum.forum_id}}/leave">Leave</a>
+    {% else %}
+        <a class="btn btn-primary" href="/forum/{{forum.forum_id}}/join">Join</a>
+    {% endif %}
+
+    {% if user.is_authenticated and user in forum.users %}
+    <a class="btn btn-primary" href="/forum/{{forum.forum_id}}/new-post">New Post</a>
+    {% endif %}
+    <br>
+    <br>
+    {% for post in forum.posts %}
+        <div class="card">
+            <div class="card-header">
+                <div align="left">title: {{ post.title }}</div>
+                <div align="right">author: {{ post.author.name }}, time: {{ post.date }}</div>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Content</h5>
+            <p class="card-text brief">{{ post.tags }}</p>
+            <p class="card-text brief">{{ post.content }}</p>
+            <a href="/forum/{{forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Post</a>
+            </div>
+        </div>
+        <br>
+        <br>
+      {% endfor %}
+      <br>
+      <br>
+      <br>
+      <br>
+    {% if user.is_authenticated %}
+    {% endif %}
+</div>
+{% endblock %}
