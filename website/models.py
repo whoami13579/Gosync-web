@@ -103,9 +103,8 @@ class Forum(db.Model):
 class Post(db.Model):
     __tablename__ = "posts"
 
-    def __init__(self, title, tags, content, start, end, meeting_point, destination, max_participants, user_id, forum_id):
+    def __init__(self, title, content, start, end, meeting_point, destination, max_participants, user_id, forum_id):
         self.title = title
-        self.tags = tags
         self.content = content
         self.start = start
         self.end = end
@@ -118,7 +117,6 @@ class Post(db.Model):
 
     post_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
-    tags = db.Column(db.String(20))
     content = db.Column(db.String(300))
     start = db.Column(db.DateTime())
     end = db.Column(db.DateTime())

@@ -32,7 +32,7 @@
             <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text brief">{{ forum.description }}</p>
-            <a href="/forum/{{ forum.forum_id }}" class="btn btn-primary">See Forum</a>
+            <a href="/forum/{{ forum.forum_id }}" class="btn btn-primary">See Category</a>
             </div>
         </div>
         <br>
@@ -47,9 +47,8 @@
             </div>
             <div class="card-body">
             <h5 class="card-title">Content</h5>
-            <p class="card-text brief">{{ post.tags }}</p>
             <p class="card-text brief">{{ post.content }}</p>
-            <a href="/forum/{{post.forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Post</a>
+            <a href="/forum/{{post.forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Event</a>
             </div>
         </div>
         <br>

@@ -15,31 +15,30 @@
     <br>
 
     {% if user.user_id == forum.user_id %}
-        <a class="btn btn-danger" href="/forum/{{forum.forum_id}}/delete">Delete Forum</a>
+        <a class="btn btn-danger" href="/forum/{{forum.forum_id}}/delete">Delete Category</a>
     {% endif %}
 
-    {% if user.is_authenticated and user in forum.users %}
+    <!-- {% if user.is_authenticated and user in forum.users %}
         <a class="btn btn-danger" href="/forum/{{forum.forum_id}}/leave">Leave</a>
     {% else %}
         <a class="btn btn-primary" href="/forum/{{forum.forum_id}}/join">Join</a>
-    {% endif %}
+    {% endif %} -->
 
-    {% if user.is_authenticated and user in forum.users %}
+    <!-- {% if user.is_authenticated and user in forum.users %}
+    {% endif %} -->
     <a class="btn btn-primary" href="/forum/{{forum.forum_id}}/new-post">New Event</a>
-    {% endif %}
     <br>
     <br>
     {% for post in forum.posts %}
         <div class="card">
             <div class="card-header">
                 <div align="left">title: {{ post.title }}</div>
-                <div align="right">author: {{ post.author.name }}, time: {{ post.date }}</div>
+                <div align="right">author: {{ post.author.name }}</div>
             </div>
             <div class="card-body">
             <h5 class="card-title">Content</h5>
-            <p class="card-text brief">{{ post.tags }}</p>
             <p class="card-text brief">{{ post.content }}</p>
-            <a href="/forum/{{forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Post</a>
+            <a href="/forum/{{forum.forum_id}}/{{post.post_id}}" class="btn btn-primary">See Event</a>
             </div>
         </div>
         <br>

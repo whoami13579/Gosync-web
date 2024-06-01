@@ -18,13 +18,12 @@
 
 <div align="center">
   <h1>title : {{post.title}}</h1>
-  <a>{{ post.tags }}</a>
 
   <div align="left">
     <h3>author : {{post.author.name}}</h3>
     <br>
     <br>
-    <a>likes : {{ post.likes | length }}</a>
+    <a>members : {{ post.likes | length }}</a>
     <br>
     <br>
     <h3>Content</h3>
@@ -35,7 +34,7 @@
     </div>
 
     {% if user.get_id() == post.author.get_id() %}
-      <a class="btn btn-danger" href="/forum/{{ post.forum_id }}/{{post.post_id}}/delete">Delete</a>
+      <a class="btn btn-danger" href="/forum/{{ post.forum_id }}/{{post.post_id}}/delete">Delete Event</a>
     {% endif %}
 
     {% if user.is_authenticated %}
@@ -47,31 +46,36 @@
     {% endif %}
   <br>
   <br>
-  {% if user.is_authenticated %}
+  <!-- {% if user.is_authenticated %}
     <a class="btn btn-danger" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/report">Report</a>
+  {% endif %} -->
+
+  <br>
+  <br>
+  {% if post.comments | length > 0 %}
+    <h3 id="Chat">Chat</h3>
   {% endif %}
+  {% for comment in post.comments %}
+    {% if comment.user.get_id() == post.author.get_id() %}
+      <a>{{comment.user.name}} (host): {{comment.text}}</a>
+    {% elif comment.user.get_id() == user.get_id() %}
+      <a>{{comment.user.name}} (you): {{comment.text}}</a>
+    {% else %}
+      <a>{{comment.user.name}}: {{comment.text}}</a>
+    {% endif %}
   <br>
   <br>
+  {% endfor %}
 
   {% if user.is_authenticated %}
     <form method="POST">
           <div class="mb-3">
-            <label for="text" class="form-label">Comment</label>
-            <input type="text" id="text" name="text" class="form-control" placeholder="Enter Your Comment" required>
+            <!-- <label for="text" class="form-label">Chat</label> -->
+            <input type="text" id="text" name="text" class="form-control" placeholder="Enter Your Message" required>
           </div>
-          <button type="submit" class="btn btn-primary">comment</button>
+          <button type="submit" class="btn btn-primary">Send</button>
       </form>
   {% endif %}
-
-  <h3>Comments</h3>
-  {% for comment in post.comments %}
-    <a>author: {{comment.user.name}}</a>
-    <br>
-    <a>{{comment.text}}</a>
-    <br>
-    <br>
-    <br>
-  {% endfor %}
 
   {% if user.is_authenticated %}
   {% endif %}

@@ -23,7 +23,6 @@ def forum(forum_id):
 def new_post(forum_id):
     if request.method == "POST":
         title = request.form.get("title")
-        tags = request.form.get("tags")
         content = request.form.get("content")
         start = request.form.get("start")
         end = request.form.get("end")
@@ -35,9 +34,12 @@ def new_post(forum_id):
         start = datetime.strptime(start, date_format).date()
         end = datetime.strptime(end, date_format).date()
 
-        post = Post(title, tags, content, start, end, meeting_point, destination, max_participants, current_user.get_id(), forum_id)
+        post = Post(title, content, start, end, meeting_point, destination, max_participants, current_user.get_id(), forum_id)
         post.author = current_user
         post.forum = Forum.query.filter_by(forum_id=forum_id).first()
+
+        post.likes.append(current_user)
+
         db.session.add(post)
         db.session.commit()
 
@@ -145,6 +147,7 @@ def view_post(forum_id, post_id):
 
         db.session.add(comment)
         db.session.commit()
+        return redirect(url_for("views.view_post", forum_id=forum_id, post_id=post_id) + '#Chat')
 
     return render_template("post.html", user=current_user, post=Post.query.filter_by(post_id=post_id).first())
 

@@ -14,7 +14,7 @@
     <br>
     <br>
     {% if user.is_authenticated %}
-        <a class="btn btn-primary" href="/new-forum">Create New Forum</a>
+        <a class="btn btn-primary" href="/new-forum">Create New Category</a>
     {% endif %}
     <br>
     <br>
@@ -27,7 +27,7 @@
             <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text brief">{{ forum.description }}</p>
-            <a href="/forum/{{ forum.forum_id }}" class="btn btn-primary">See Forum</a>
+            <a href="/forum/{{ forum.forum_id }}" class="btn btn-primary">See Category</a>
             </div>
         </div>
         <br>

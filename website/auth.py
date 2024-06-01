@@ -16,6 +16,8 @@ def signup_ios():
     # Extract data from the request
     name = data.get('name')
     email = data.get('email')
+    phone = data.get('phone')
+    nickname = data.get('nickname')
     password = data.get('password')
     password2 = data.get('password2')
 
@@ -25,7 +27,7 @@ def signup_ios():
         return jsonify({'event': 'signup', 'state': 'failure', 'reason': 'Passwords do not match'}), 400
 
     role = Role.query.filter_by(role_id=1).first()
-    user = User(email, name, generate_password_hash(password), None, None, 1)
+    user = User(email, name, nickname, generate_password_hash(password), phone, 100, 1)
     if role is not None:
         role.users.append(user)
     db.session.add(user)
@@ -61,7 +63,7 @@ def sign_up():
             flash("Passwords don\'t match.", category="error")
         else:
             role = Role.query.filter_by(role_id=1).first()
-            user = User(email, name, generate_password_hash(password1), nickname, phone,100, 1)
+            user = User(email, name, nickname, generate_password_hash(password1), phone, 100, 1)
             if role is not None:
                 role.users.append(user)
             db.session.add(user)
@@ -69,7 +71,7 @@ def sign_up():
 
             login_user(user, remember=True)
             # login_user(user)
-            flash("Teacher created.", category="success")
+            flash("User created.", category="success")
             html = url_for("views.home")
             print(html)
             return redirect(html)
