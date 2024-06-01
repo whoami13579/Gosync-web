@@ -22,7 +22,6 @@
 
   <div align="left">
     <h3>author : {{post.author.name}}</h3>
-    <h3>post time : {{post.date}}</h3>
     <br>
     <br>
     <a>likes : {{ post.likes | length }}</a>
@@ -34,11 +33,16 @@
     <div class="wrapper">
       <p class="demo-1" align="left">{{post.content}}</p>
     </div>
+
+    {% if user.get_id() == post.author.get_id() %}
+      <a class="btn btn-danger" href="/forum/{{ post.forum_id }}/{{post.post_id}}/delete">Delete</a>
+    {% endif %}
+
     {% if user.is_authenticated %}
       {% if user in post.likes %}
-        <a class="btn btn-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Like</a>
+        <a class="btn btn-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Leave Event</a>
       {% else %}
-        <a class="btn btn-outline-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Like</a>
+        <a class="btn btn-outline-primary" href="/forum/{{ post.forum_id }}/{{ post.post_id }}/like">Join Event</a>
       {% endif %}
     {% endif %}
   <br>

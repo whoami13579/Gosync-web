@@ -25,11 +25,19 @@ def new_post(forum_id):
         title = request.form.get("title")
         tags = request.form.get("tags")
         content = request.form.get("content")
+        start = request.form.get("start")
+        end = request.form.get("end")
+        meeting_point = request.form.get("meeting_point")
+        destination = request.form.get("destination")
+        max_participants = int(request.form.get("max_participants"))
 
-        post = Post(title, tags, content, current_user.get_id(), forum_id)
+        date_format = "%Y-%m-%d"
+        start = datetime.strptime(start, date_format).date()
+        end = datetime.strptime(end, date_format).date()
+
+        post = Post(title, tags, content, start, end, meeting_point, destination, max_participants, current_user.get_id(), forum_id)
         post.author = current_user
         post.forum = Forum.query.filter_by(forum_id=forum_id).first()
-
         db.session.add(post)
         db.session.commit()
 
@@ -102,6 +110,23 @@ def delete_forum(forum_id):
     flash("You can't delete this forum.", category="error")
     return redirect(url_for("views.homne"))
 
+
+@views.route("/forum/<forum_id>/<post_id>/delete")
+@login_required
+def delete_post(forum_id, post_id):
+    post = Post.query.filter_by(forum_id=post_id).first()
+
+    if post.author.user_id == current_user.get_id() or current_user.get_id() == 2:
+        db.session.delete(post)
+        db.session.commit()
+
+        flash("Post Deleted", category="success")
+        return redirect(url_for("views.home"))
+
+
+    flash("You can't delete this forum.", category="error")
+    return redirect(url_for("views.homne"))
+
 @views.route("/my-forums")
 @login_required
 def my_forums():
@@ -135,9 +160,12 @@ def like_post(forum_id, post_id):
 
         return redirect(url_for("views.view_post", forum_id=forum_id, post_id=post_id))
     else:
-        post.likes.append(current_user)
+        if len(post.likes) < post.max_participants:
+            post.likes.append(current_user)
 
-        db.session.commit()
+            db.session.commit()
+        else:
+            flash("You can't join.", category="error")
 
         return redirect(url_for("views.view_post", forum_id=forum_id, post_id=post_id))
 

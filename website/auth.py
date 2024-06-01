@@ -46,10 +46,8 @@ def sign_up():
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
-        school = request.form.get("school")
-        birthday = request.form.get("birthday")
-        date_format = "%Y-%m-%d"
-        birthday = datetime.strptime(birthday, date_format).date()
+        nickname = request.form.get("nickname")
+        phone = request.form.get("phone")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
 
@@ -63,7 +61,7 @@ def sign_up():
             flash("Passwords don\'t match.", category="error")
         else:
             role = Role.query.filter_by(role_id=1).first()
-            user = User(email, name, generate_password_hash(password1), school, birthday, 1)
+            user = User(email, name, generate_password_hash(password1), nickname, phone,100, 1)
             if role is not None:
                 role.users.append(user)
             db.session.add(user)

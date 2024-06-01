@@ -22,6 +22,16 @@ Post_likes = db.Table(
     ),
 )
 
+Post_member = db.Table(
+    "post_members",
+    db.Column("user_id", db.Integer, db.ForeignKey("users.user_id")),
+    db.Column(
+        "post_id",
+        db.Integer,
+        db.ForeignKey("posts.post_id"),
+    ),
+)
+
 
 class Role(db.Model):
     __tablename__ = "roles"
@@ -42,20 +52,23 @@ class Role(db.Model):
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
-    def __init__(self, email, name, password, school, birthday, role_id):
+    def __init__(self, email, name, nickname, password, phone, credit_score, role_id):
         self.email = email
         self.name = name
+        self.nickname = nickname
         self.password = password
-        self.school = school
-        self.birthday = birthday
+        self.phone = phone
+        self.credit_score = credit_score
         self.role_id = role_id
 
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
     name = db.Column(db.String(150), unique=True)
+    nickname = db.Column(db.String(20))
     password = db.Column(db.String(150))
-    school = db.Column(db.String(150))
-    birthday = db.Column(db.Date)
+    credit_score = db.Column(db.Integer())
+    phone = db.Column(db.String(10))
+
 
     role_id = db.Column(db.ForeignKey("roles.role_id"))
 
@@ -63,9 +76,10 @@ class User(db.Model, UserMixin):
         return self.user_id
 
     def __repr__(self):
-        return f"id: {self.user_id}, email: {self.email}, name: {self.name}, school: {self.school}, birthday: {self.birthday}, role: {self.role_id}"
+        return f"id: {self.user_id}, email: {self.email}, name: {self.name}, nickname: {self.nickname}, credit score: {self.credit_score}, role: {self.role_id}"
 
 
+# 分類
 class Forum(db.Model):
     __tablename__ = "forums"
 
@@ -85,13 +99,19 @@ class Forum(db.Model):
         return f"id: {self.forum_id}, name: {self.name}"
 
 
+# 事件
 class Post(db.Model):
     __tablename__ = "posts"
 
-    def __init__(self, title, tags, content, user_id, forum_id):
+    def __init__(self, title, tags, content, start, end, meeting_point, destination, max_participants, user_id, forum_id):
         self.title = title
         self.tags = tags
         self.content = content
+        self.start = start
+        self.end = end
+        self.meeting_point = meeting_point
+        self.destination = destination
+        self.max_participants = max_participants
         self.report = False
         self.user_id = user_id
         self.forum_id = forum_id
@@ -100,7 +120,11 @@ class Post(db.Model):
     title = db.Column(db.String(50))
     tags = db.Column(db.String(20))
     content = db.Column(db.String(300))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    start = db.Column(db.DateTime())
+    end = db.Column(db.DateTime())
+    meeting_point = db.Column(db.String(100))
+    destination = db.Column(db.String(100))
+    max_participants = db.Column(db.Integer)
     report = db.Column(db.Boolean)
 
     user_id = db.Column(db.ForeignKey("users.user_id"))
@@ -109,11 +133,13 @@ class Post(db.Model):
     author = db.relationship("User", backref="posts")
     forum = db.relationship("Forum", backref="posts")
     likes = db.relationship("User", secondary=Post_likes, backref="likes")
+    members = db.relationship("User", secondary=Post_member, backref="events")
 
     def __repr__(self):
         return f"id: {self.post_id}, title: {self.title}, tag: {self.tag}, content: {self.content}, likes: {self.likes}, date: {self.date}, report: {self.report}, user_id: {self.user_id}, forum_id: {self.forum_id}"
 
 
+# 聊天內容
 class Comment(db.Model):
     __tablename__ = "comments"
 
