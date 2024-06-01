@@ -55,17 +55,24 @@
   {% if post.comments | length > 0 %}
     <h3 id="Chat">Chat</h3>
   {% endif %}
+  <div class="col-9" align="center" style="background-color: gray;">
   {% for comment in post.comments %}
-    {% if comment.user.get_id() == post.author.get_id() %}
-      <a>{{comment.user.name}} (host): {{comment.text}}</a>
-    {% elif comment.user.get_id() == user.get_id() %}
-      <a>{{comment.user.name}} (you): {{comment.text}}</a>
-    {% else %}
-      <a>{{comment.user.name}}: {{comment.text}}</a>
+    <div > 
+    {% if comment.user.get_id() == user.get_id() %}
+      <a>{{comment.user.name}} (you)</a>     
+      <div style="border-radius: 50px; background-color: aquamarine;right: 50%;max-width: 30%;">{{comment.text}}</div>
+    {% elif comment.user.get_id() == post.author.get_id() %}
+      <a>{{comment.user.name}} (host)</a>    
+      <div style="border-radius: 50px; background-color: rgb(166, 226, 126);left: 20%;max-width: 30%;">{{comment.text}}</div>
+      {% else %}
+      <a>{{comment.user.name}}</a>
+      <div style="border-radius: 50px; background-color: rgb(255, 200, 127);left: 20%;max-width: 30%;">{{comment.text}}</div>
     {% endif %}
-  <br>
-  <br>
+    <br>
+    <br>
+    </div>
   {% endfor %}
+  </div>
 
   {% if user.is_authenticated %}
     <form method="POST">
