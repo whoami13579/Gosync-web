@@ -55,24 +55,33 @@
   {% if post.comments | length > 0 %}
     <h3 id="Chat">Chat</h3>
   {% endif %}
-  <div class="col-9" align="center" style="background-color: gray;">
+  <div class="col-9 overflow-auto" align="center" style="background-color: rgba(247, 242, 242, 0.822); max-height: 500px;">
   {% for comment in post.comments %}
-    <div > 
+    <div align="center"> 
     {% if comment.user.get_id() == user.get_id() %}
-      <a>{{comment.user.name}} (you)</a>     
-      <div style="border-radius: 50px; background-color: aquamarine;right: 50%;max-width: 30%;">{{comment.text}}</div>
+    <div align="right"> 
+      <a style="padding-right: 10px;"><strong>{{comment.user.name}} (you)</strong></a>     
+      <div align="center" class="positon-absolute end-30" style="border-radius: 50px; background-color: aquamarine;max-width: 30%; width:fit-content;min-width: 5%; padding:0 10px">{{comment.text}}</div>
+    </div>
     {% elif comment.user.get_id() == post.author.get_id() %}
-      <a>{{comment.user.name}} (host)</a>    
-      <div style="border-radius: 50px; background-color: rgb(166, 226, 126);left: 20%;max-width: 30%;">{{comment.text}}</div>
+    <div align="left"> 
+      <a style="padding-left: 10px;">{{comment.user.name}} (host)</a>    
+      <div align="center" style="border-radius: 50px; background-color: rgba(180, 223, 152, 0.922);max-width: 30%; width:fit-content;min-width: 5%; padding:0 10px">{{comment.text}}</div>
+    </div>
       {% else %}
-      <a>{{comment.user.name}}</a>
-      <div style="border-radius: 50px; background-color: rgb(255, 200, 127);left: 20%;max-width: 30%;">{{comment.text}}</div>
+    <div align="left"> 
+      <a style="padding-left: 10px;">{{comment.user.name}}</a>
+      <div align="center" style="border-radius: 50px; background-color: rgb(255, 200, 127);max-width: 30%; width:fit-content;min-width: 5%; padding:0 10px">{{comment.text}}</div>
+    </div>
     {% endif %}
     <br>
     <br>
     </div>
   {% endfor %}
+
   </div>
+  <br>
+  <br>
 
   {% if user.is_authenticated %}
     <form method="POST">
@@ -83,6 +92,8 @@
           <button type="submit" class="btn btn-primary">Send</button>
       </form>
   {% endif %}
+  <br>
+  <br>
 
   {% if user.is_authenticated %}
   {% endif %}
